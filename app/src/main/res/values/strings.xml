@@ -10,5 +10,8 @@
     <string name="unbookmark">&#xf25d;</string>
     <string name="user">&#xf007;</string>
     <string name="error_book">"already booked, released by 15 mins"</string>
-    <string name="error_net">"could not connect"</string>error
+    <string name="error_net">"could not connect"</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="out_of_scope">but detail page was not required</string>
+    <string name="reverse">List reversed!</string>
 </resources>

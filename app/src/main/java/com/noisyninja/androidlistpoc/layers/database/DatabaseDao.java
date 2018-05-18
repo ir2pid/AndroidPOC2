@@ -22,8 +22,10 @@ public interface DatabaseDao {
     @Query("SELECT * FROM me")
     LiveData<List<Me>> getAll();
 
-    @Query("SELECT * FROM me where meId LIKE  :meId")
-    LiveData<Me> findById(int meId);
+    /*
+        @Query("SELECT * FROM me where meId LIKE  :meId")
+        LiveData<Me> findById(int meId);
+    */
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Me customer);

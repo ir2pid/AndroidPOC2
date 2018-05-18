@@ -34,15 +34,34 @@ class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, c
     }
 
     override fun getAll(): LiveData<List<Me>> {
+
         return mDataBase.databaseDao().all
     }
 
-    override fun findById(id: Int): LiveData<Me> {
+    /*override fun findById(id: Int): LiveData<Me> {
         return mDataBase.databaseDao().findById(id)
-    }
+    }*/
 
     override fun insert(me: Me?) {
-        return mDataBase.databaseDao().insert(me)
+        Completable.fromAction(object : Action {
+            @Throws(Exception::class)
+            override fun run() {
+                mUtilModule.logI("inserting")
+                mDataBase.databaseDao().insert(me)
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onComplete() {
+                mUtilModule.logI("inserting done")
+            }
+
+            override fun onError(e: Throwable) {
+                mUtilModule.logI("delete error " + e.message)
+            }
+        })
+
     }
 
     override fun delete(me: Me?) {
@@ -50,7 +69,7 @@ class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, c
             @Throws(Exception::class)
             override fun run() {
                 mUtilModule.logI("deleting")
-                return mDataBase.databaseDao().delete(me)
+                mDataBase.databaseDao().delete(me)
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
@@ -61,7 +80,7 @@ class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, c
             }
 
             override fun onError(e: Throwable) {
-                mUtilModule.logI("delete error")
+                mUtilModule.logI("delete error " + e.message)
             }
         })
     }
@@ -82,7 +101,7 @@ class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, c
             }
 
             override fun onError(e: Throwable) {
-                mUtilModule.logI("insert error")
+                mUtilModule.logI("delete error " + e.message)
             }
         })
     }

@@ -20,12 +20,14 @@ import java.util.List;
 public class DataConverter {
 
     @BindingAdapter("thumbnail")
-    public static void loadImage(ImageView view, String imageUrl) {
+    public static void loadImage(final ImageView view, final String imageUrl) {
         Picasso.with(view.getContext())
                 .load(imageUrl)
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.mipmap.ic_launcher_round)
+                .fit()
                 .into(view);
+
     }
 
     @TypeConverter

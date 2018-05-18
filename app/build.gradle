@@ -27,7 +27,11 @@ android {
         buildConfigField "String", "API_URI", CONFIG("api.uri")
         buildConfigField "String", "APP_DB", CONFIG("app.db")
         buildConfigField "String", "CACHE_SIZE", CONFIG("cache.size")
+        buildConfigField "String", "NETSYNC_FLAG", CONFIG("netsync.flag")
+        buildConfigField "String", "NETSYNC_SEED", CONFIG("netsync.seed")
+        buildConfigField "String", "NETSYNC_SEED_VALUE", CONFIG("netsync.seed.value")
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -56,6 +60,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
 

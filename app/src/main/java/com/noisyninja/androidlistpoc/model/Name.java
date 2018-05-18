@@ -14,6 +14,9 @@ public class Name {
     @SerializedName("last")
     @Expose
     private String last;
+    public Name(String first) {
+        this.first = first;
+    }
 
     public String getTitle() {
         return title;

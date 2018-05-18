@@ -34,6 +34,7 @@ public class GenericObserver<T> extends DisposableObserver<T> {
     public void onNext(T t) {
         Utils.logI(GenericObserver.class, "OnNext");
         onSuccess(t);
+        dispose();
     }
 
     @Override

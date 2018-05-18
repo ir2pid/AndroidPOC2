@@ -8,13 +8,13 @@ import android.widget.TextView
 
 
 /**
- * to create icons using font awesome
+ * to create icons using f
  * Created by sudiptadutta on 13/05/18.
  */
 
 class IconTextView : TextView {
 
-    private lateinit var mContext: Context
+    private var mContext: Context
 
     constructor(context: Context) : super(context) {
         this.mContext = context
@@ -34,7 +34,7 @@ class IconTextView : TextView {
     private fun createView() {
         gravity = Gravity.CENTER
 
-        val tf = Typeface.createFromAsset(getContext().assets, "fontawesome.ttf")
+        val tf = Typeface.createFromAsset(context.assets, "fontawesome.ttf")
         setTypeface(tf, 1)
     }
 }

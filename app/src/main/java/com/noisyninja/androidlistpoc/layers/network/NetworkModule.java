@@ -21,13 +21,13 @@ public class NetworkModule {
         mHttpClient = httpClient;
     }
 
-    public void getPeople(final ICallback iCallback, int page, int count) {
-        getCustomerObservable(page,count).subscribeWith(getObserver(iCallback));
+    public GenericObserver<Object> getPeople(final ICallback iCallback, int page, int count, int seed) {
+        return getCustomerObservable(page, count, seed).subscribeWith(getObserver(iCallback));
     }
 
-    private Observable<MeResponse> getCustomerObservable(int page, int count) {
+    private Observable<MeResponse> getCustomerObservable(int page, int count, int seed) {
         return mHttpClient.getClient().create(INetworkDao.class)
-                .getPeople(page,count)
+                .getPeople(page, count, seed)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

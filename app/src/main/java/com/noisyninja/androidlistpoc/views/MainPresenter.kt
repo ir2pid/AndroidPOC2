@@ -2,57 +2,53 @@ package com.noisyninja.androidlistpoc.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.support.annotation.Nullable
 import android.support.v7.app.AppCompatActivity
-import com.noisyninja.androidlistpoc.BuildConfig
 import com.noisyninja.androidlistpoc.layers.database.viewmodel.MeViewModel
 import com.noisyninja.androidlistpoc.layers.di.NinjaComponent
-import com.noisyninja.androidlistpoc.layers.network.ICallback
 import com.noisyninja.androidlistpoc.model.Me
-import com.noisyninja.androidlistpoc.model.MeResponse
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * main presenter
  * Created by sudiptadutta on 12/05/18.
  */
 
-class MainPresenter internal constructor(private val iMainActivity: IMainActivity, private val ninjaComponent: NinjaComponent) : IMainPresenter, ICallback<MeResponse> {
+class MainPresenter internal constructor(private val iMainActivity: IMainActivity, private val ninjaComponent: NinjaComponent) : IMainPresenter {
+
+    private var meViewModel: MeViewModel = ViewModelProviders.of(iMainActivity as AppCompatActivity, ninjaComponent.
+            vmf()).get(MeViewModel::class.java)
 
     init {
         getList()
     }
 
     override fun getList() {
-        ninjaComponent.network().getPeople(this, 1, BuildConfig.RESULT_COUNT.toInt())
-    }
-
-    override fun showDetail(meId: Int) {
-        /* val intent = Intent(ninjaApplication?.applicationContext, DetailActivity::class.java)
-          intent.putExtra("customerID", id)
-          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-          ninjaApplication?.applicationContext?.startActivity(intent)*/
-    }
-
-    override fun onSuccess(result: MeResponse?) {
-        ninjaComponent.util().logI("net response")
-        handleResponse(result?.people)
-    }
-
-
-    override fun onError(t: Throwable) {
-
-        val meViewModel: MeViewModel = ViewModelProviders.of(iMainActivity as AppCompatActivity, ninjaComponent.
-                vmf()).get(MeViewModel::class.java)
 
         meViewModel.getMe().
                 observe(iMainActivity as AppCompatActivity, object : Observer<List<Me>> {
                     override fun onChanged(@Nullable result: List<Me>?) {
-
-                        ninjaComponent.util().logI("db response")
-                        // customerViewModel.getCustomers().removeObserver(this)//to not update
+                        //meViewModel.getMe().removeObserver(this)//to not update
                         handleResponse(result)
                     }
                 })
+    }
+
+    override fun showDetail(me: Me) {
+        //todo stub to open detail
+        val intent = Intent(ninjaComponent.appContext(), DetailActivity::class.java)
+        intent.putExtra("meID", me.name.first)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ninjaComponent.appContext().startActivity(intent)
+    }
+
+    override fun reverseList(arrayList: ArrayList<ArrayList<Me>>): ArrayList<ArrayList<Me>> {
+        Collections.reverse(arrayList)
+
+        //hack to prevent stickygridadapter from accessing invalid indexes, we set old list to zero and add new copy
+        return ArrayList(arrayList)
     }
 
     private fun handleResponse(result: List<Me>?) {
@@ -61,8 +57,36 @@ class MainPresenter internal constructor(private val iMainActivity: IMainActivit
             iMainActivity.setList(ArrayList())
         } else {
             ninjaComponent.util().logI("got response")
-            iMainActivity.setList(ArrayList(result))
-            ninjaComponent.database2().insertAll(result)
+
+            val array: ArrayList<ArrayList<Me>> = makeGridLayoutReady(result)
+            //ninjaComponent.util().logI(ninjaComponent.util().toJson(array))
+            iMainActivity.setList(array)
         }
     }
+
+    /**
+     * this creates a nested array of users for the gridlayout and sticky headers
+     */
+    private fun makeGridLayoutReady(result: List<Me>): ArrayList<ArrayList<Me>> {
+        val array: ArrayList<ArrayList<Me>> = ArrayList()
+        var array2: ArrayList<Me> = ArrayList()
+        var counter = 0
+        var pageCount = 0
+        for (me: Me in result) {
+            me.page = pageCount
+            array2.add(me)
+            counter++
+            if (counter % 9 == 0) {
+                pageCount++
+                array.add(array2)
+                array2 = ArrayList()
+            }
+        }
+        if (array.size < counter) {//adding leftovers
+            array.add(array2)
+        }
+        return array
+    }
+
+
 }

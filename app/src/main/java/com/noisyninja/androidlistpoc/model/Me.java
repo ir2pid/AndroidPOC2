@@ -4,31 +4,32 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 @Entity(tableName = "me")
 public class Me {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "meId")
-    private int meId;
-
+    @PrimaryKey()
+    @NonNull
     @TypeConverters(DataConverter.class)
     @SerializedName("name")
     @Expose
     private Name name;
-
     @TypeConverters(DataConverter.class)
     @SerializedName("picture")
     @Expose
     private Picture picture;
-
     @Expose
     @ColumnInfo(name = "page")
     private int page;
 
+    public Me(Name name) {
+        this.name = name;
+    }
 
     public Name getName() {
         return name;
@@ -46,12 +47,8 @@ public class Me {
         this.picture = picture;
     }
 
-    public int getMeId() {
-        return meId;
-    }
-
-    public void setMeId(int meId) {
-        this.meId = meId;
+    public String getWeek() {
+        return DayOfWeek.values()[page % 7].toString();
     }
 
     public int getPage() {

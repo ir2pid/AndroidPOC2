@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import dagger.Module;
+import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -20,6 +21,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.noisyninja.androidlistpoc.BuildConfig.BASE_URL;
+import static com.noisyninja.androidlistpoc.BuildConfig.CACHE_SIZE;
 
 /**
  * Http client
@@ -49,7 +51,7 @@ public class HttpClient {
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(interceptor)
                     //.addInterceptor(new ForceCacheInterceptor())//for network cache
-                    //.cache(new Cache(mContext.getCacheDir(), Long.parseLong(CACHE_SIZE)))
+                    .cache(new Cache(mContext.getCacheDir(), Long.parseLong(CACHE_SIZE)))
                     .build();
 
             retrofit = new Retrofit.Builder()

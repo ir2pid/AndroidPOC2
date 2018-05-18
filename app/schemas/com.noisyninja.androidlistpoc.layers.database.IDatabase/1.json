@@ -2,23 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e700338d15846abbff467efd96d5cdc4",
+    "identityHash": "46310fd59db10e986b13667a0a545cda",
     "entities": [
       {
         "tableName": "me",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `picture` TEXT, `page` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `picture` TEXT, `page` INTEGER NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
-          {
-            "fieldPath": "meId",
-            "columnName": "meId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "picture",
@@ -35,9 +29,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "meId"
+            "name"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -45,7 +39,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e700338d15846abbff467efd96d5cdc4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"46310fd59db10e986b13667a0a545cda\")"
     ]
   }
 }

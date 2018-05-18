@@ -3,12 +3,12 @@ package com.noisyninja.androidlistpoc.layers.di
 import android.content.Context
 import android.content.res.Resources
 import com.noisyninja.androidlistpoc.NinjaApp
-import com.noisyninja.androidlistpoc.layers.UtilModule
-import com.noisyninja.androidlistpoc.layers.network.HttpClient
-import com.noisyninja.androidlistpoc.layers.network.NetworkModule
 import com.noisyninja.androidlistpoc.layers.AppExecutors
+import com.noisyninja.androidlistpoc.layers.UtilModule
 import com.noisyninja.androidlistpoc.layers.database.DataBaseModule
 import com.noisyninja.androidlistpoc.layers.database.viewmodel.ViewModelFactory
+import com.noisyninja.androidlistpoc.layers.network.HttpClient
+import com.noisyninja.androidlistpoc.layers.network.NetworkModule
 import com.squareup.leakcanary.RefWatcher
 import dagger.Module
 import dagger.Provides
@@ -39,8 +39,8 @@ class NinjaModule(private val application: NinjaApp, val refWatcher: RefWatcher)
 
     @Provides
     @Singleton
-    fun provideViewModelFactory(dataBaseModule: DataBaseModule): ViewModelFactory {
-        return ViewModelFactory(dataBaseModule)
+    fun provideViewModelFactory(): ViewModelFactory {
+        return ViewModelFactory()
     }
 
     @Provides
