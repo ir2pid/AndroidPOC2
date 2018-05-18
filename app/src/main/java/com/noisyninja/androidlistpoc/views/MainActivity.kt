@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
-class MainActivity : AppCompatActivity(), IMainActivity {
+open class MainActivity : AppCompatActivity(), IMainActivity {
 
     private var mResultList: ArrayList<ArrayList<Me>> = ArrayList()
     private lateinit var mIMainPresenter: IMainPresenter

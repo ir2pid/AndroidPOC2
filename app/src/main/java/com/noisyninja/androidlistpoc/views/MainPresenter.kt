@@ -51,7 +51,7 @@ class MainPresenter internal constructor(private val iMainActivity: IMainActivit
         return ArrayList(arrayList)
     }
 
-    private fun handleResponse(result: List<Me>?) {
+    fun handleResponse(result: List<Me>?) {
         if (result == null) {
             ninjaComponent.util().logI("null response")
             iMainActivity.setList(ArrayList())
@@ -67,7 +67,7 @@ class MainPresenter internal constructor(private val iMainActivity: IMainActivit
     /**
      * this creates a nested array of users for the gridlayout and sticky headers
      */
-    private fun makeGridLayoutReady(result: List<Me>): ArrayList<ArrayList<Me>> {
+    fun makeGridLayoutReady(result: List<Me>): ArrayList<ArrayList<Me>> {
         val array: ArrayList<ArrayList<Me>> = ArrayList()
         var array2: ArrayList<Me> = ArrayList()
         var counter = 0

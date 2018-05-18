@@ -32,7 +32,7 @@ public class UtilModule {
     @Inject
     public UtilModule(Context context) {
 
-        Utils.logI(this.getClass(), "DataBaseModule");
+        //Utils.logI(this.getClass(), "DataBaseModule");
         this.mContext = context;
     }
 
