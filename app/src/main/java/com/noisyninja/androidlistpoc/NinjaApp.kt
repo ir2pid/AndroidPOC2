@@ -1,23 +1,27 @@
 package com.noisyninja.androidlistpoc
 
 import android.app.Application
+import com.noisyninja.androidlistpoc.layers.RefWatcherModule
 import com.noisyninja.androidlistpoc.layers.di.DaggerNinjaComponent
 import com.noisyninja.androidlistpoc.layers.di.NinjaComponent
-import com.noisyninja.androidlistpoc.layers.di.NinjaInjector
-import com.noisyninja.androidlistpoc.layers.di.NinjaModule
+import com.noisyninja.androidlistpoc.layers.di.RepositoryModule
+import com.noisyninja.androidlistpoc.layers.di.SystemModule
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
-
 
 /**
  * Application subclass
  * Created by sudiptadutta on 27/04/18.
  */
 
-class NinjaApp : Application() {
+open class NinjaApp : Application() {
 
-    var ninjaComponent: NinjaComponent? = null
-        private set
+    open val ninjaComponent: NinjaComponent by lazy {
+        DaggerNinjaComponent.builder()
+                .systemModule(SystemModule(this, RefWatcherModule( LeakCanary.install(this))))
+                .repositoryModule(RepositoryModule())
+                .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -28,12 +32,9 @@ class NinjaApp : Application() {
             return
         }
 
-        ninjaComponent = DaggerNinjaComponent.builder()
-                .ninjaModule(NinjaModule(this, LeakCanary.install(this)))
-                .build()
         //ninjaComponent!!.inject(this)
-        NinjaInjector.setApplication(this)
-        NinjaInjector.getNinjaComponent(this).inject(this)
+        //NinjaInjector.setApplication(this)
+        //NinjaInjector.getNinjaComponent(this).inject(this)
 /*
         val intent = Intent(this, TimeoutService::class.java)
         startService(intent)

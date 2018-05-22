@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Android api thread executor
  * Created by sudiptadutta on 10/05/18.
  */
-class AppExecutors(private val diskIO: Executor, private val networkIO: Executor, private val mainThread: Executor) {
+open class AppExecutors(private val diskIO: Executor, private val networkIO: Executor, private val mainThread: Executor) {
 
     class MainThreadExecutor @Inject constructor() : Executor {
         private val mainThreadHandler = Handler(Looper.getMainLooper())

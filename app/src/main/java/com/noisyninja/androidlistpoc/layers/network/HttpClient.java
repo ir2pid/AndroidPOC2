@@ -3,6 +3,7 @@ package com.noisyninja.androidlistpoc.layers.network;
 import android.content.Context;
 
 import com.noisyninja.androidlistpoc.layers.UtilModule;
+import com.noisyninja.androidlistpoc.layers.Utils;
 
 import java.io.IOException;
 
@@ -38,6 +39,7 @@ public class HttpClient {
 
     @Inject
     public HttpClient(Context context, UtilModule utilModule) {
+        Utils.logI(this.getClass(), "HttpClient created");
         mContext = context;
         mUtilModule = utilModule;
     }

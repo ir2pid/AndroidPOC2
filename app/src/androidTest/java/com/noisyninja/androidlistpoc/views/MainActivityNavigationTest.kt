@@ -1,19 +1,18 @@
-package com.noisyninja.androidlistpoc
+package com.noisyninja.androidlistpoc.views
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.Espresso.pressBack
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.rule.ActivityTestRule
+import android.support.test.espresso.Espresso
+import android.support.test.espresso.action.ViewActions
+import android.support.test.espresso.contrib.RecyclerViewActions
+import android.support.test.espresso.intent.rule.IntentsTestRule
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import android.view.ViewGroup
 import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter
-import com.noisyninja.androidlistpoc.views.MainActivity
+import com.noisyninja.androidlistpoc.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
@@ -24,39 +23,36 @@ import org.junit.runner.RunWith
  */
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest : BaseTest() {
+class MainActivityNavigationTest : BaseTest() {
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+    var mActivityTestRule = IntentsTestRule(MainActivity::class.java)
 
-    @Test
-    fun testFirstEntry() {
-
-    }
-
+    /**
+     * test app navigation
+     */
     @Test
     fun mainActivityTest() {
 
         sleepMedium()
 
-        val recyclerView = onView(
-                allOf(withId(R.id.recyclerList)))
+        val recyclerView = Espresso.onView(
+                Matchers.allOf(ViewMatchers.withId(R.id.recyclerList)))
 
-        val floatingActionButton = onView(
-                allOf(withId(R.id.fab)))
+        val floatingActionButton = Espresso.onView(
+                Matchers.allOf(ViewMatchers.withId(R.id.fab)))
 
-
-        recyclerView.perform(actionOnItemAtPosition<StickyHeaderGridAdapter.ViewHolder>(2, click()))
+        recyclerView.perform(RecyclerViewActions.actionOnItemAtPosition<StickyHeaderGridAdapter.ViewHolder>(2, ViewActions.click()))
         sleepShort()
-        pressBack()
-        floatingActionButton.perform(click())
+        Espresso.pressBack()
+        floatingActionButton.perform(ViewActions.click())
         sleepShort()
 
-        recyclerView.perform(actionOnItemAtPosition<StickyHeaderGridAdapter.ViewHolder>(1, click()))
+        recyclerView.perform(RecyclerViewActions.actionOnItemAtPosition<StickyHeaderGridAdapter.ViewHolder>(1, ViewActions.click()))
         sleepShort()
-        pressBack()
-        floatingActionButton.perform(click())
+        Espresso.pressBack()
+        floatingActionButton.perform(ViewActions.click())
         sleepShort()
 
     }

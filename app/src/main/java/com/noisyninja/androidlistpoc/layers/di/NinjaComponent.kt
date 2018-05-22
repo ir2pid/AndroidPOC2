@@ -4,26 +4,27 @@ import android.content.Context
 import android.content.res.Resources
 import com.noisyninja.androidlistpoc.NinjaApp
 import com.noisyninja.androidlistpoc.layers.AppExecutors
+import com.noisyninja.androidlistpoc.layers.RefWatcherModule
 import com.noisyninja.androidlistpoc.layers.UtilModule
 import com.noisyninja.androidlistpoc.layers.database.DataBaseModule
 import com.noisyninja.androidlistpoc.layers.database.viewmodel.ViewModelFactory
 import com.noisyninja.androidlistpoc.layers.network.NetworkModule
-import com.squareup.leakcanary.RefWatcher
+import com.noisyninja.androidlistpoc.views.MainPresenter
 import dagger.Component
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
+
 
 /**
  * module interface
  * Created by sudiptadutta on 27/04/18.
  */
-
 @Singleton
-@Component(modules = arrayOf(NinjaModule::class))
+@Component(modules = arrayOf(AndroidSupportInjectionModule::class, SystemModule::class, RepositoryModule::class))
 interface NinjaComponent {
-
-    fun inject(ninjaApplication: NinjaApp)
+    fun inject(mainPresenter: MainPresenter)
     fun app(): NinjaApp
-    fun refWatcher(): RefWatcher
+    fun refWatcher(): RefWatcherModule
     fun appContext(): Context
     fun resources(): Resources
     fun network(): NetworkModule

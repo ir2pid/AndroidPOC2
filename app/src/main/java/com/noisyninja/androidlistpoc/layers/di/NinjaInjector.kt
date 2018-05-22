@@ -8,17 +8,17 @@ import com.noisyninja.androidlistpoc.NinjaApp
  * Created by sudiptadutta on 27/04/18.
  */
 
-object NinjaInjector {
+class NinjaInjector {
 
     var ninjaApplication: NinjaApp? = null
 
     val ninjaComponent: NinjaComponent
-        get() = ninjaApplication!!.ninjaComponent!!
+        get() = ninjaApplication!!.ninjaComponent
 
     fun setApplication(application: NinjaApp) {
         ninjaApplication = application
     }
 
     fun getNinjaComponent(context: Context): NinjaComponent =
-            (context.applicationContext as NinjaApp).ninjaComponent!!
+            (context.applicationContext as NinjaApp).ninjaComponent
 }

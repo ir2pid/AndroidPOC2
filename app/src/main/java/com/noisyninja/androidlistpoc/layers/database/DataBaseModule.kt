@@ -19,8 +19,7 @@ import javax.inject.Inject
  * databse client
  * Created by sudiptadutta on 30/04/18.
  */
-class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, context: Context) : DatabaseDao {
-
+open class DataBaseModule @Inject constructor(internal var mUtilModule: UtilModule, context: Context) : DatabaseDao {
 
     internal var mDataBase: IDatabase
 

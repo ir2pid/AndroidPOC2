@@ -2,26 +2,34 @@ package com.noisyninja.androidlistpoc.layers.database.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import android.content.res.Resources
 import com.noisyninja.androidlistpoc.BuildConfig.NETSYNC_SEED_VALUE
 import com.noisyninja.androidlistpoc.BuildConfig.RESULT_COUNT
 import com.noisyninja.androidlistpoc.R
+import com.noisyninja.androidlistpoc.layers.UtilModule
 import com.noisyninja.androidlistpoc.layers.Utils
-import com.noisyninja.androidlistpoc.layers.di.NinjaInjector.ninjaComponent
+import com.noisyninja.androidlistpoc.layers.database.DataBaseModule
 import com.noisyninja.androidlistpoc.layers.network.ICallback
+import com.noisyninja.androidlistpoc.layers.network.NetworkModule
 import com.noisyninja.androidlistpoc.model.Me
 import com.noisyninja.androidlistpoc.model.MeResponse
 import com.noisyninja.androidlistpoc.model.Name
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 
 /**
- * view model for Me
+ * view model for Me pojo, also acts as the repository which syncs with network
+ * and fetches from database when a connection isn't available
  * Created by sudiptadutta on 10/05/18.
  */
+class MeViewModel @Inject constructor(val dataBaseModule: DataBaseModule,
+                                      val utilModule: UtilModule,
+                                      val resources: Resources,
+                                      val networkModule: NetworkModule) : ViewModel(), ICallback<MeResponse> {
 
-class MeViewModel : ViewModel(), ICallback<MeResponse> {
 
-    private var errorResponse: Me = Me(Name(ninjaComponent.resources().getString(R.string.error_net)))
+    private var errorResponse: Me = Me(Name(resources.getString(R.string.error_net)))
     var compositeDisposables = CompositeDisposable()
 
 
@@ -29,7 +37,7 @@ class MeViewModel : ViewModel(), ICallback<MeResponse> {
 
     init {
         Utils.logI(this.javaClass, "MeViewModel")
-        meLiveData = ninjaComponent.database().all
+        meLiveData = dataBaseModule.all
     }
 
     fun getMe(): LiveData<List<Me>> {
@@ -37,7 +45,7 @@ class MeViewModel : ViewModel(), ICallback<MeResponse> {
         if (meLiveData.value == null || meLiveData.value!!.isEmpty() || meLiveData.value!!.size < 2) {
             Utils.logI(this.javaClass, "getMe network")
             compositeDisposables
-                    .add(ninjaComponent.network()
+                    .add(networkModule
                             .getPeople(this, 1, RESULT_COUNT.toInt(), NETSYNC_SEED_VALUE.toInt()))
         } else {
             Utils.logI(this.javaClass, "getMe database")
@@ -46,18 +54,18 @@ class MeViewModel : ViewModel(), ICallback<MeResponse> {
     }
 
     override fun onSuccess(result: MeResponse?) {
-        ninjaComponent.util().logI("net response")
+        utilModule.logI("net response")
 
-        ninjaComponent.database().delete(errorResponse)
-        ninjaComponent.database().insertAll(result?.people)
+        dataBaseModule.delete(errorResponse)
+        dataBaseModule.insertAll(result?.people)
         dispose()
 
     }
 
     override fun onError(t: Throwable) {
-        ninjaComponent.util().logI("no response")
+        utilModule.logI("no response")
 
-        ninjaComponent.database().insert(errorResponse)
+        dataBaseModule.insert(errorResponse)
         dispose()
     }
 

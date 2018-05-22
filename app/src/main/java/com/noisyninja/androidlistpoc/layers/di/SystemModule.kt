@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import com.noisyninja.androidlistpoc.NinjaApp
 import com.noisyninja.androidlistpoc.layers.AppExecutors
+import com.noisyninja.androidlistpoc.layers.RefWatcherModule
 import com.noisyninja.androidlistpoc.layers.UtilModule
 import com.noisyninja.androidlistpoc.layers.database.DataBaseModule
 import com.noisyninja.androidlistpoc.layers.database.viewmodel.ViewModelFactory
@@ -23,7 +24,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class NinjaModule(private val application: NinjaApp, val refWatcher: RefWatcher) {
+class SystemModule(private val application: NinjaApp, val refWatcherModule: RefWatcherModule) {
 
     @Provides
     @Singleton
@@ -33,14 +34,8 @@ class NinjaModule(private val application: NinjaApp, val refWatcher: RefWatcher)
 
     @Provides
     @Singleton
-    fun provideRefWatch(): RefWatcher {
-        return refWatcher
-    }
-
-    @Provides
-    @Singleton
-    fun provideViewModelFactory(): ViewModelFactory {
-        return ViewModelFactory()
+    fun provideRefWatch(): RefWatcherModule {
+        return refWatcherModule
     }
 
     @Provides
@@ -53,18 +48,6 @@ class NinjaModule(private val application: NinjaApp, val refWatcher: RefWatcher)
     @Singleton
     fun provideResources(): Resources {
         return application.resources
-    }
-
-    @Provides
-    @Singleton
-    fun provideHttpClient(context: Context, utilModule: UtilModule): HttpClient {
-        return HttpClient(context, utilModule)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNetwork(httpClient: HttpClient): NetworkModule {
-        return NetworkModule(httpClient)
     }
 
     @Provides
@@ -91,12 +74,6 @@ class NinjaModule(private val application: NinjaApp, val refWatcher: RefWatcher)
     @Singleton
     fun provideExecutor(@Named("diskIOExecutor") diskIOExecutor: Executor, @Named("networkIOExecutor") networkIOExecutor: Executor, mainThreadExecutor: AppExecutors.MainThreadExecutor): AppExecutors {
         return AppExecutors(diskIOExecutor, networkIOExecutor, mainThreadExecutor)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDataBase(utilModule: UtilModule, application: NinjaApp): DataBaseModule {
-        return DataBaseModule(utilModule, application)
     }
 
     @Provides
