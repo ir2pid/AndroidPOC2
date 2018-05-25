@@ -30,12 +30,12 @@ ext {
     minSdkVersion = 21
     targetSdkVersion = 26
     compileSdkVersion = 26
-    supportLibraryVersion = "25.3.1"
+    supportLibraryVersion = "26.1.0"
     constraintLayoutVersion = "1.1.0"
     archRoomVersion = "1.0.0"
     daggerVersion = "2.14.1"
     javaXVersion = "1.0"
-    //dataBinding = "2.3.1"
+    dataBinding = "2.3.1"
     retrofitVersion = "2.3.0"
     gsonVersion = "2.8.1"
     gsonConverterVersion = "2.1.0"
