@@ -1,4 +1,4 @@
-install: gradle wrapper --gradle-version 4.4
+#install: gradle wrapper --gradle-version 4.4
 language: android
 android:
   components:
@@ -18,7 +18,9 @@ android:
     - addon-google_apis-google-26
 
 before_script:
-- chmod a+x gradlew
-- chmod a+x gradle/wrapper/gradle-wrapper.jar
+  - ./gradlew :app:assembleDebug
+#- chmod a+x gradlew
+#- chmod a+x gradle/wrapper/gradle-wrapper.jar
 
-script: gradlew build
+script:
+  - ./gradlew :app:assembleDebug
