@@ -16,7 +16,4 @@ android:
     - extra-android-m2repository
     - addon-google_apis-google-26
 
-before_script:
-- chmod a+x gradlew
-
-script: ./gradlew build
+script: gradle build
