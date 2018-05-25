@@ -1,6 +1,7 @@
 package com.noisyninja.androidlistpoc.layers.database.viewmodel
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.content.res.Resources
 import com.noisyninja.androidlistpoc.BuildConfig.NETSYNC_SEED_VALUE
@@ -23,11 +24,10 @@ import javax.inject.Inject
  * and fetches from database when a connection isn't available
  * Created by sudiptadutta on 10/05/18.
  */
-class MeViewModel @Inject constructor(val dataBaseModule: DataBaseModule,
-                                      val utilModule: UtilModule,
-                                      val resources: Resources,
-                                      val networkModule: NetworkModule) : ViewModel(), ICallback<MeResponse> {
-
+open class MeViewModel @Inject constructor(val dataBaseModule: DataBaseModule,
+                                           val utilModule: UtilModule,
+                                           val resources: Resources,
+                                           val networkModule: NetworkModule) : ViewModel(), ICallback<MeResponse> {
 
     private var errorResponse: Me = Me(Name(resources.getString(R.string.error_net)))
     var compositeDisposables = CompositeDisposable()
@@ -40,16 +40,25 @@ class MeViewModel @Inject constructor(val dataBaseModule: DataBaseModule,
         meLiveData = dataBaseModule.all
     }
 
+    fun hello(): Int {
+        return 1
+    }
+
     fun getMe(): LiveData<List<Me>> {
         Utils.logI(this.javaClass, "getMe")
+
         if (meLiveData.value == null || meLiveData.value!!.isEmpty() || meLiveData.value!!.size < 2) {
             Utils.logI(this.javaClass, "getMe network")
             compositeDisposables
                     .add(networkModule
-                            .getPeople(this, 1, RESULT_COUNT.toInt(), NETSYNC_SEED_VALUE.toInt()))
+                            .getPeople(1, RESULT_COUNT.toInt(), NETSYNC_SEED_VALUE.toInt()).subscribe(
+                                    { onSuccess(it) },
+                                    { onError(it) }
+                            ))
         } else {
             Utils.logI(this.javaClass, "getMe database")
         }
+
         return meLiveData
     }
 

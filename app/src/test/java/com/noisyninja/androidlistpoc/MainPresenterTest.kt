@@ -31,7 +31,6 @@ class MainPresenterTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-
         arrayList.add(me!!)
         arrayList.add(me!!)
         arrayList.add(me!!)

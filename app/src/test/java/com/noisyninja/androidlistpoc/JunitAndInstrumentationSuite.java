@@ -1,7 +1,5 @@
 package com.noisyninja.androidlistpoc;
 
-import com.noisyninja.androidlistpoc.views.MainPresenter;
-
 import org.junit.runners.Suite;
 
 /**
@@ -10,8 +8,8 @@ import org.junit.runners.Suite;
 
 
 @Suite.SuiteClasses({
-        UnitTest.class,
-        MainPresenterTest.class
+        UtilModuleTest.class,
+        NetworkModuleTest.class
 })
 public class JunitAndInstrumentationSuite {
 }

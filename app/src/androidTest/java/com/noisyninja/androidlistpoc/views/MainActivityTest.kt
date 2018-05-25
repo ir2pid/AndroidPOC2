@@ -16,18 +16,15 @@ import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
 import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter
-import com.noisyninja.androidlistpoc.DaggerTestComponent
 import com.noisyninja.androidlistpoc.R
 import com.noisyninja.androidlistpoc.TestApplication
-import com.noisyninja.androidlistpoc.layers.database.viewmodel.MeViewModel
 import org.hamcrest.Matchers.*
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import java.time.Clock
+import org.mockito.Matchers
+import org.mockito.Mockito.verify
 
 /**
  * Created by sudiptadutta on 18/05/18.
@@ -41,20 +38,26 @@ class MainActivityTest : BaseTest() {
     var mActivityTestRule = IntentsTestRule(MainActivity::class.java)
     lateinit var context: Context
     lateinit var app: TestApplication
+    lateinit var mainActivity: MainActivity
+    lateinit var mainPresenter: MainPresenter
 
     @Before
-    fun  setup() {
+    fun setup() {
         context = InstrumentationRegistry.getTargetContext()
         app = InstrumentationRegistry.getTargetContext().applicationContext as TestApplication
+        mainActivity = mActivityTestRule.activity
+        mainPresenter = mainActivity.mIMainPresenter as MainPresenter
+
+        mActivityTestRule.launchActivity(null)
     }
 
     @Test
-    fun daggerTest() {
-
-        /*val meViewModel = Mockito.mock(MeViewModel::class.java)
-        val mainPresenter = mActivityTestRule.activity.mIMainPresenter as MainPresenter
-        mainPresenter.meViewModel = meViewModel*/
-        //Mockito.`when`(clock.getNow()).thenReturn(DateTime().withHourOfDay(20))
+    fun testGetListCalled() {
+        /*val recyclerView = onView(
+                allOf(withId(R.id.recyclerList)))
+        sleepShort()
+        recyclerView.perform(actionOnItemAtPosition<StickyHeaderGridAdapter.ViewHolder>(1, click()))
+        verify(mainPresenter).showDetail(Matchers.any())*/
     }
 
     /**

@@ -44,7 +44,7 @@ public class HttpClient {
         mUtilModule = utilModule;
     }
 
-    Retrofit getClient() {
+    public Retrofit getClient() {
 
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()

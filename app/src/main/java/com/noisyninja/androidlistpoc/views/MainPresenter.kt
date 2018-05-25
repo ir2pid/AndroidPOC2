@@ -27,12 +27,11 @@ class MainPresenter internal constructor(private val iMainActivity: IMainActivit
     @Inject
     lateinit var util: UtilModule
 
-    private var meViewModel: MeViewModel
+    var meViewModel: MeViewModel
 
     init {
         ninjaApp.ninjaComponent.inject(this)
         meViewModel = ViewModelProviders.of(iMainActivity as AppCompatActivity, vmf).get(MeViewModel::class.java)
-        getList()
     }
 
     /**

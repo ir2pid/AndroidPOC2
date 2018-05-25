@@ -10,6 +10,7 @@ import com.noisyninja.androidlistpoc.layers.network.HttpClient
 import com.noisyninja.androidlistpoc.layers.network.NetworkModule
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
@@ -31,14 +32,14 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(context: Context, utilModule: UtilModule): HttpClient {
-        return HttpClient(context, utilModule)
+    fun provideRetrofit(context: Context, utilModule: UtilModule): Retrofit {
+        return HttpClient(context, utilModule).client
     }
 
     @Provides
     @Singleton
-    fun provideNetwork(httpClient: HttpClient): NetworkModule {
-        return NetworkModule(httpClient)
+    fun provideNetwork(retrofit: Retrofit): NetworkModule {
+        return NetworkModule(retrofit)
     }
 
     @Provides

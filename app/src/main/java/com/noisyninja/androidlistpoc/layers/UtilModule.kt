@@ -27,10 +27,6 @@ constructor(private val mContext: Context) {
             return cm != null && cm.activeNetworkInfo != null
         }
 
-    init {
-        Utils.logI(this.javaClass, "UtilModule created")
-    }
-
     fun getStringRes(@StringRes resId: Int): String {
         return mContext.getString(resId)
     }

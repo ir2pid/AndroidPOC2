@@ -1,5 +1,6 @@
 package com.noisyninja.androidlistpoc
 
+import android.content.Context
 import android.content.res.Resources
 import android.support.test.InstrumentationRegistry
 import com.noisyninja.androidlistpoc.layers.AppExecutors
@@ -18,19 +19,30 @@ import org.mockito.Mockito
  */
 class TestApplication : NinjaApp() {
 
-    val viewModelFactory = Mockito.mock(ViewModelFactory::class.java)
-    val meViewModel = Mockito.mock(MeViewModel::class.java)
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var meViewModel: MeViewModel
+
+    lateinit var refWatcherModule: RefWatcherModule
+    lateinit var utilModule: UtilModule
+    lateinit var resourcesModule: Resources
+    lateinit var networkModule: NetworkModule
+    lateinit var appExecutors: AppExecutors
+    lateinit var testApplication: TestApplication
+    lateinit var appContext: Context
+    lateinit var dataBaseModule: DataBaseModule
 
     override val ninjaComponent: NinjaComponent by lazy {
+        initialise()
 
-        DaggerTestComponent.builder().database(Mockito.mock(DataBaseModule::class.java))
-                .app(InstrumentationRegistry.getTargetContext().applicationContext as TestApplication)
-                .appContext(InstrumentationRegistry.getTargetContext())
-                .executor(Mockito.mock(AppExecutors::class.java))
-                .network(Mockito.mock(NetworkModule::class.java))
-                .resources(Mockito.mock(Resources::class.java))
-                .util(Mockito.mock(UtilModule::class.java))
-                .refWatcher(Mockito.mock(RefWatcherModule::class.java))
+        DaggerTestComponent.builder()
+                .database(dataBaseModule)
+                .app(testApplication)
+                .appContext(appContext)
+                .executor(appExecutors)
+                .network(networkModule)
+                .resources(resourcesModule)
+                .util(utilModule)
+                .refWatcher(refWatcherModule)
                 .vmf(viewModelFactory)
                 .build()
         //.systemModule(SystemModule(this, LeakCanary.install(this)))
@@ -38,7 +50,30 @@ class TestApplication : NinjaApp() {
         //.database()
     }
 
-    init {
+    private fun initialise() {
+        mockAll()
+
+        //Mockito.`when`(meViewModel.hello()).thenReturn(1)
         Mockito.`when`(viewModelFactory.create(MeViewModel::class.java)).thenReturn(meViewModel)
     }
+
+    private fun mockAll() {
+        refWatcherModule = Mockito.mock(RefWatcherModule::class.java)
+        utilModule = Mockito.mock(UtilModule::class.java)
+        resourcesModule = Mockito.mock(Resources::class.java)
+        networkModule = Mockito.mock(NetworkModule::class.java)
+        appExecutors = Mockito.mock(AppExecutors::class.java)
+        testApplication = InstrumentationRegistry.getTargetContext().applicationContext as TestApplication
+        appContext = InstrumentationRegistry.getTargetContext()
+        dataBaseModule = Mockito.mock(DataBaseModule::class.java)
+        meViewModel = Mockito.mock(MeViewModel::class.java)
+        viewModelFactory = Mockito.mock(ViewModelFactory::class.java)
+
+/*
+        meViewModel.dataBaseModule = dataBaseModule
+        meViewModel.networkModule = networkModule
+        meViewModel.resources = resourcesModule
+        meViewModel.utilModule = utilModule*/
+    }
+
 }

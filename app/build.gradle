@@ -75,6 +75,8 @@ dependencies {
     //okhttp
     compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
     compile "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    //okhttp test
+    testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.okhttpVersion"
 
     // gson  picasso
     compile "com.google.code.gson:gson:$rootProject.gsonVersion"
@@ -116,11 +118,14 @@ dependencies {
     // required if you want to use Mockito for unit tests
     testCompile "org.mockito:mockito-core:$rootProject.mockitoCoreVersion"
     // to make mockito mock final classes
-    testCompile 'org.mockito:mockito-inline:2.13.0'
+    /*testCompile 'org.mockito:mockito-inline:2.13.0'
     testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
         exclude group: 'org.jetbrains.kotlin'
         exclude group: 'org.mockito'
-    }
+    }*/
+    //powermockito
+    //testCompile 'org.powermock:powermock-mockito-release-full:1.4.9'
+
     // required if you want to use Mockito for Android tests
     androidTestCompile "org.mockito:mockito-android:$rootProject.mockitoAndroidVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
