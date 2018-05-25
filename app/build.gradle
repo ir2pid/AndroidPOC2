@@ -95,7 +95,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     //databinding
-    kapt "com.android.databinding:compiler:$rootProject.dataBinding"
+    //kapt "com.android.databinding:compiler:$rootProject.dataBinding"
 
     //room ORM
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
