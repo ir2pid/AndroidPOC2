@@ -16,6 +16,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
+import com.noisyninja.androidlistpoc.layers.Utils.toJson
+
+
 
 
 /**
@@ -55,6 +58,9 @@ class NetworkModuleTest : BaseRepository() {
                 .addInterceptor(interceptor)
                 .build()
 
+        // to mock response too
+        // mMockWebServer.enqueue(MockResponse().setBody(Gson().toJson(meResponse)))
+
         val retrofit = Retrofit.Builder()
                 .baseUrl(mMockWebServer.url(url))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -71,6 +77,16 @@ class NetworkModuleTest : BaseRepository() {
         mSubscriber.assertNoErrors()
         mSubscriber.assertValue({ it ->
             it.people.size == 100
+        })
+        mSubscriber.assertValue({ it ->
+            it.info != null
+            it.people.get(0).name != null
+            it.people.get(0).name.first != null
+            it.people.get(0).name.title != null
+            it.people.get(0).name.last != null
+            it.people.get(0).picture.large != null
+            it.people.get(0).picture.medium != null
+            it.people[0].picture.thumbnail != null
         })
     }
 
